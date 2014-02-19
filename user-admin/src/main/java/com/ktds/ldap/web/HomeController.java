@@ -29,7 +29,7 @@ import com.ktds.ldap.service.UserService;
 
 import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+//import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -70,6 +70,7 @@ public class HomeController {
 
 	@RequestMapping(value = {"/", "/users" }, method = RequestMethod.GET)
 	public String index(ModelMap map, @RequestParam(required = false) String name) {
+		logger.info("(index)Welcome home! This is /users. GET");
 		if (StringUtils.hasText(name)) {
 			map.put("users", userService.searchByNameName(name));
 		} else {
@@ -80,6 +81,8 @@ public class HomeController {
 
 	@RequestMapping(value = "/users/{userid}", method = RequestMethod.GET)
 	public String getUser(@PathVariable String userid, ModelMap map) throws JsonProcessingException {
+		logger.info("(getUser)Welcome home! This is /users/{}. GET", userid);
+		map.put("new", false);
 		map.put("user", userService.findUser(userid));
 		populateDepartments(map);
 		return "editUser";
@@ -87,14 +90,15 @@ public class HomeController {
 
 	@RequestMapping(value = "/newuser", method = RequestMethod.GET)
 	public String initNewUser(ModelMap map) throws JsonProcessingException {
+		logger.info("(initNewUser)Welcome home! This is /newuser. GET");
 		User user = new User();
 		user.setEmployeeNumber(nextEmployeeNumber.getAndIncrement());
-
+		
 		map.put("new", true);
 		map.put("user", user);
 		populateDepartments(map);
 
-		return "editUser";
+		return "newUser";
 	}
 
 	private void populateDepartments(ModelMap map) throws JsonProcessingException {
@@ -106,6 +110,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/newuser", method = RequestMethod.POST)
 	public String createUser(User user) {
+		logger.info("(createUser)Welcome home! This is /newuser.{} POST", user.getFullName());
 		User savedUser = userService.createUser(user);
 
 		return "redirect:/users/" + savedUser.getId();
@@ -113,6 +118,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/users/{userid}", method = RequestMethod.POST)
 	public String updateUser(@PathVariable String userid, User user) {
+		logger.info("(updateUser)Welcome home! This is /users/userid:{}. POST", userid);
 		User savedUser = userService.updateUser(userid, user);
 
 		return "redirect:/users/" + savedUser.getId();
