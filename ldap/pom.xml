@@ -17,7 +17,7 @@
 	<repositories>
 		<repository>
 			<id>local-nexus</id>
-			<url>http://sec.ktds.com:7070/nexus/content/groups/public/</url>
+			<url>http://nexus.unionia.com:7070/nexus/content/groups/public/</url>
 		</repository>
 	</repositories>
 	<dependencies>
