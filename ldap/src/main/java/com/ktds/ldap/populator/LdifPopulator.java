@@ -2,12 +2,16 @@ package com.ktds.ldap.populator;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.ldap.core.ContextSource;
 import org.springframework.ldap.support.LdapUtils;
 import org.springframework.util.Assert;
+
+import com.ktds.ldap.web.HomeController;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -18,6 +22,7 @@ import java.util.List;
  * @since 2.0
  */
 public class LdifPopulator implements InitializingBean {
+	private static final Logger logger = LoggerFactory.getLogger(LdifPopulator.class);
 	private Resource resource;
 	private ContextSource contextSource;
 
@@ -63,6 +68,7 @@ public class LdifPopulator implements InitializingBean {
 			resource = new ByteArrayResource(sw.toString().getBytes("UTF8"));
 		}
 
+		logger.info("안종덕 ===> afterProperties:{}", this.defaultBase);
 		if (clean) {
 			LdapTestUtils.clearSubContexts(contextSource, LdapUtils.emptyLdapName());
 		}

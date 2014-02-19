@@ -2,10 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:import url="header.jsp" />
 <script type="text/javascript">
-	var departments = $
-	{
-		departments
-	};
+	var departments = ${departments};
 
 	$(document).ready(function() {
 		var departmentSelect = $('#department');

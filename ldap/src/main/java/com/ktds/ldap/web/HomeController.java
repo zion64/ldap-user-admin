@@ -43,7 +43,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class HomeController {
 
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger("com.ktds.ldap");
 	private final AtomicInteger nextEmployeeNumber = new AtomicInteger(10);
 	@Autowired
 	private DepartmentRepo departmentRepo;
@@ -56,7 +56,7 @@ public class HomeController {
 	 */
 //	@RequestMapping(value = "/testing", method = RequestMethod.GET)
 //	public String home(Locale locale, Model model) {
-//		logger.info("Welcome home! The client locale is {}.", locale);
+//		logger.info("환영합니다! 로깅합니다. The client locale is {}.", locale);
 //
 //		Date date = new Date();
 //		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
@@ -70,7 +70,7 @@ public class HomeController {
 
 	@RequestMapping(value = {"/", "/users" }, method = RequestMethod.GET)
 	public String index(ModelMap map, @RequestParam(required = false) String name) {
-		logger.info("(index)Welcome home! This is /users. GET");
+		logger.info("(index)환영합니다! 로깅합니다. This is /users. GET");
 		if (StringUtils.hasText(name)) {
 			map.put("users", userService.searchByNameName(name));
 		} else {
@@ -81,21 +81,22 @@ public class HomeController {
 
 	@RequestMapping(value = "/users/{userid}", method = RequestMethod.GET)
 	public String getUser(@PathVariable String userid, ModelMap map) throws JsonProcessingException {
-		logger.info("(getUser)Welcome home! This is /users/{}. GET", userid);
 		map.put("new", false);
 		map.put("user", userService.findUser(userid));
 		populateDepartments(map);
+		logger.info("(initNewUser)환영합니다! 로깅합니다. This is /users/{}. GET...{}", userid, userService.findUser(userid).getDepartment());
 		return "editUser";
 	}
 
 	@RequestMapping(value = "/newuser", method = RequestMethod.GET)
 	public String initNewUser(ModelMap map) throws JsonProcessingException {
-		logger.info("(initNewUser)Welcome home! This is /newuser. GET");
+		
 		User user = new User();
 		user.setEmployeeNumber(nextEmployeeNumber.getAndIncrement());
 		
 		map.put("new", true);
 		map.put("user", user);
+		logger.info("(initNewUser)환영합니다! 로깅합니다. This is /newuser. GET...{}", user.getDepartment());
 		populateDepartments(map);
 
 		return "newUser";
@@ -105,12 +106,13 @@ public class HomeController {
 		Map<String, List<String>> departmentMap = departmentRepo.getDepartmentMap();
 		ObjectMapper objectMapper = new ObjectMapper();
 		String departmentsAsJson = objectMapper.writeValueAsString(departmentMap);
+		logger.info("(populateDepartments)환영합니다! 로깅합니다. {}", departmentsAsJson);
 		map.put("departments", departmentsAsJson);
 	}
 
 	@RequestMapping(value = "/newuser", method = RequestMethod.POST)
 	public String createUser(User user) {
-		logger.info("(createUser)Welcome home! This is /newuser.{} POST", user.getFullName());
+		logger.info("(createUser)환영합니다! 로깅합니다. This is /newuser.{} POST", user.getFullName());
 		User savedUser = userService.createUser(user);
 
 		return "redirect:/users/" + savedUser.getId();
@@ -118,7 +120,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/users/{userid}", method = RequestMethod.POST)
 	public String updateUser(@PathVariable String userid, User user) {
-		logger.info("(updateUser)Welcome home! This is /users/userid:{}. POST", userid);
+		logger.info("(updateUser)환영합니다! 로깅합니다. This is /users/userid:{}. POST", userid);
 		User savedUser = userService.updateUser(userid, user);
 
 		return "redirect:/users/" + savedUser.getId();
