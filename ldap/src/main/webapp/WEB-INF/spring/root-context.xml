@@ -35,19 +35,19 @@
 
 	<beans profile="default">
 		<!-- Populates the LDAP server with initial data -->
-<!-- 		<bean class="com.ktds.ldap.populator.LdifPopulator"> -->
-<!-- 			<property name="contextSource" ref="contextSource" /> -->
-<!-- 			<property name="resource" value="classpath:/setup_data.ldif" /> -->
-<!-- 			<property name="base" value="${sample.ldap.base}" /> -->
-<!-- 			<property name="clean" value="${sample.ldap.clean}" /> -->
-<!-- 			<property name="defaultBase" value="dc=example,dc=com" /> -->
-<!-- 		</bean> -->
+		<bean class="com.ktds.ldap.populator.LdifPopulator">
+			<property name="contextSource" ref="contextSource" />
+			<property name="resource" value="classpath:/setup_data.ldif" />
+			<property name="base" value="${sample.ldap.base}" />
+			<property name="clean" value="${sample.ldap.clean}" />
+			<property name="defaultBase" value="dc=unionia,dc=com" />
+		</bean>
 		<!-- <bean class="com.ktds.ldap.populator.LdifPopulator" depends-on="embeddedLdapServer"> -->
 		<!-- <property name="contextSource" ref="contextSource" /> -->
 		<!-- <property name="resource" value="classpath:/setup_data.ldif" /> -->
 		<!-- <property name="base" value="${sample.ldap.base}" /> -->
 		<!-- <property name="clean" value="${sample.ldap.clean}" /> -->
-		<!-- <property name="defaultBase" value="dc=example,dc=com" /> -->
+		<!-- <property name="defaultBase" value="dc=unionia,dc=com" /> -->
 		<!-- </bean> -->
 
 		<!-- This is for test and demo purposes only - EmbeddedLdapServerFactoryBean launches an in-process LDAP server. -->
@@ -65,7 +65,7 @@
 			<property name="resource" value="classpath:/setup_data.ldif" />
 			<property name="base" value="${sample.ldap.base}" />
 			<property name="clean" value="${sample.ldap.clean}" />
-			<property name="defaultBase" value="dc=example,dc=com" />
+			<property name="defaultBase" value="dc=unionia,dc=com" />
 		</bean>
 	</beans>
 </beans>
