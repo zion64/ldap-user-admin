@@ -1,8 +1,8 @@
 package com.ktds.ldap.web;
 
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+//import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+//import static org.springframework.web.bind.annotation.RequestMethod.GET;
+//import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -81,7 +81,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/users/{userid}", method = RequestMethod.GET)
 	public String getUser(@PathVariable String userid, ModelMap map) throws JsonProcessingException {
-		map.put("new", false);
+//		map.put("new", false);
 		map.put("user", userService.findUser(userid));
 		populateDepartments(map);
 		logger.info("선택한 사용자의 정보를 얻어옮니다. 선택된 사용자는 /users/[{}]이고 소속부서는 [{}] 입니다.", userid, userService.findUser(userid).getDepartment());
@@ -95,8 +95,8 @@ public class HomeController {
 		
 		user.setEmployeeNumber(nextEmployeeNumber.getAndIncrement());
 		
-		map.put("new", true);
-		logger.info("new에 할당된 값은 [{}]입니다.", map.get("new"));
+//		map.put("new", true);
+//		logger.info("new에 할당된 값은 [{}]입니다.", map.get("new"));
 		map.put("user", user);
 		
 		populateDepartments(map);
@@ -175,7 +175,7 @@ public class HomeController {
         return "redirect:/groups/" + name;
     }
 
-    @RequestMapping(value = "/groups/{name}/members", method = DELETE)
+    @RequestMapping(value = "/groups/{name}/members", method = RequestMethod.DELETE)
     public String removeUserFromGroup(@PathVariable String name, @RequestParam String userId) {
         Group group = groupRepo.findByName(name);
         group.removeMember(userService.toAbsoluteDn(LdapUtils.newLdapName(userId)));
