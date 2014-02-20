@@ -45,9 +45,9 @@
 <div class="container">
 <div class="main-body">
     <form method="POST" role="form" class="form-horizontal">
-<%--         <c:if test="${new}"> --%>
-<%--             <input type="hidden" name="employeeNumber" value="${user.employeeNumber}" /> --%>
-<%--         </c:if> --%>
+        <c:if test="${new }">
+            <input type="hidden" name="employeeNumber" value="${user.employeeNumber}" />
+        </c:if>
         <div class="form-group">
             <label for="employeeNumber" class="control-label col-md-2">Employee Number</label>
             <div class="col-md-2">

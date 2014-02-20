@@ -19,18 +19,24 @@ package com.ktds.ldap.service;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.support.BaseLdapNameAware;
+
 import com.ktds.ldap.domain.DirectoryType;
 import com.ktds.ldap.domain.Group;
 import com.ktds.ldap.domain.GroupRepo;
 import com.ktds.ldap.domain.User;
 import com.ktds.ldap.domain.UserRepo;
+
 import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.ldap.support.LdapUtils;
 
 import javax.naming.Name;
 import javax.naming.ldap.LdapName;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +45,9 @@ import java.util.Set;
  * @author Mattias Hellborg Arthursson
  */
 public class UserService implements BaseLdapNameAware {
+	
+	private static final Logger logger = LoggerFactory.getLogger("com.ktds.ldap");
+	
 	private final UserRepo userRepo;
 	private final GroupRepo groupRepo;
 	private LdapName baseLdapPath;
@@ -68,10 +77,12 @@ public class UserService implements BaseLdapNameAware {
 	}
 
 	public User findUser(String userId) {
+		logger.info("사용자를 찾으러 갑니다. 아이디는 다음과 같습니다. {}", userId);
 		return userRepo.findOne(LdapUtils.newLdapName(userId));
 	}
 
 	public User createUser(User user) {
+		logger.info("사용자를 생성하러 갑니다. 사원번호는 다음과 같습니다. {} ", user.getEmployeeNumber());
 		User savedUser = userRepo.save(user);
 
 		Group userGroup = getUserGroup();
@@ -95,6 +106,7 @@ public class UserService implements BaseLdapNameAware {
 	 * @return
 	 */
 	public Set<User> findAllMembers(Iterable<Name> absoluteIds) {
+		logger.info("모든 구성원을 찾으러 갑니다.");
 		return Sets.newLinkedHashSet(userRepo.findAll(toRelativeIds(absoluteIds)));
 	}
 
@@ -108,6 +120,7 @@ public class UserService implements BaseLdapNameAware {
 	}
 
 	public User updateUser(String userId, User user) {
+		logger.info("사용자 정보를 갱신합니다. 사용자아이디와 기타 정보는 다음과 같습니다. \n사용자ID: {}\n이름: {}\n소속부서: {}", userId, user.getFullName(), user.getDepartment());
 		LdapName originalId = LdapUtils.newLdapName(userId);
 		User existingUser = userRepo.findOne(originalId);
 

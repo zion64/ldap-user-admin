@@ -70,7 +70,7 @@ public class HomeController {
 
 	@RequestMapping(value = {"/", "/users" }, method = RequestMethod.GET)
 	public String index(ModelMap map, @RequestParam(required = false) String name) {
-		logger.info("(index)환영합니다! 로깅합니다. This is /users. GET");
+		logger.info("사용자 목록을 얻어 옮니다.(/users)");
 		if (StringUtils.hasText(name)) {
 			map.put("users", userService.searchByNameName(name));
 		} else {
@@ -84,19 +84,21 @@ public class HomeController {
 		map.put("new", false);
 		map.put("user", userService.findUser(userid));
 		populateDepartments(map);
-		logger.info("(initNewUser)환영합니다! 로깅합니다. This is /users/{}. GET...{}", userid, userService.findUser(userid).getDepartment());
+		logger.info("선택한 사용자의 정보를 얻어옮니다. 선택된 사용자는 /users/[{}]이고 소속부서는 [{}] 입니다.", userid, userService.findUser(userid).getDepartment());
 		return "editUser";
 	}
 
 	@RequestMapping(value = "/newuser", method = RequestMethod.GET)
 	public String initNewUser(ModelMap map) throws JsonProcessingException {
-		
+		logger.info("새로운 LDAP사용자를 입력받기 위한 폼을 준비합니다. ");
 		User user = new User();
+		
 		user.setEmployeeNumber(nextEmployeeNumber.getAndIncrement());
 		
 		map.put("new", true);
+		logger.info("new에 할당된 값은 [{}]입니다.", map.get("new"));
 		map.put("user", user);
-		logger.info("(initNewUser)환영합니다! 로깅합니다. This is /newuser. GET...{}", user.getDepartment());
+		
 		populateDepartments(map);
 
 		return "newUser";
@@ -106,13 +108,13 @@ public class HomeController {
 		Map<String, List<String>> departmentMap = departmentRepo.getDepartmentMap();
 		ObjectMapper objectMapper = new ObjectMapper();
 		String departmentsAsJson = objectMapper.writeValueAsString(departmentMap);
-		logger.info("(populateDepartments)환영합니다! 로깅합니다. {}", departmentsAsJson);
+		logger.info("부서목록을 얻으러 갑니다. {}", departmentsAsJson);
 		map.put("departments", departmentsAsJson);
 	}
 
 	@RequestMapping(value = "/newuser", method = RequestMethod.POST)
 	public String createUser(User user) {
-		logger.info("(createUser)환영합니다! 로깅합니다. This is /newuser.{} POST", user.getFullName());
+		logger.info("사용자를 생성합니다. 사용자이름은 [{}]입니다.", user.getFullName());
 		User savedUser = userService.createUser(user);
 
 		return "redirect:/users/" + savedUser.getId();
