@@ -22,7 +22,8 @@ import java.util.List;
  * @since 2.0
  */
 public class LdifPopulator implements InitializingBean {
-	private static final Logger logger = LoggerFactory.getLogger(LdifPopulator.class);
+	private static final Logger logger = LoggerFactory.getLogger("com.ktds.ldap");
+	
 	private Resource resource;
 	private ContextSource contextSource;
 
@@ -68,7 +69,7 @@ public class LdifPopulator implements InitializingBean {
 			resource = new ByteArrayResource(sw.toString().getBytes("UTF8"));
 		}
 
-		logger.info("안종덕 ===> afterProperties:{}", this.defaultBase);
+		logger.info("�덉쥌��===> afterProperties:{}", this.defaultBase);
 		if (clean) {
 			LdapTestUtils.clearSubContexts(contextSource, LdapUtils.emptyLdapName());
 		}

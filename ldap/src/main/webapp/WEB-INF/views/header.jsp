@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%-- <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %> --%>
+<%-- <%@ taglib prefix="framework" uri="http://www.naver.com/ctl/framework" %> --%>
+<%-- <%@ taglib prefix="ui" uri="http://www.naver.com/ctl/ui" %> --%>
+
 <html>
 <head>
 <title>Spring LDAP User Admin</title>
