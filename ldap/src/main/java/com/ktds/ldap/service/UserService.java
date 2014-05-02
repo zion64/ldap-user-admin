@@ -50,7 +50,9 @@ public class UserService implements BaseLdapNameAware {
 	
 	private final UserRepo userRepo;
 	private final GroupRepo groupRepo;
+	
 	private LdapName baseLdapPath;
+	
 	private DirectoryType directoryType;
 
 	@Autowired

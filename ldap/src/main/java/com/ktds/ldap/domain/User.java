@@ -28,7 +28,7 @@ import javax.naming.Name;
 /**
  * @author Mattias Hellborg Arthursson
  */
-@Entry(objectClasses = { "inetOrgPerson", "organizationalPerson", "person", "top" }, base = "ou=people,dc=unionia,dc=com")
+@Entry(objectClasses = { "inetOrgPerson", "organizationalPerson", "person", "top" }, base = "ou=people")
 public final class User {
     @Id
     private Name id;

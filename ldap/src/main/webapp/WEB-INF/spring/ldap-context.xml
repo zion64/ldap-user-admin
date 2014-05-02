@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:ldap="http://www.springframework.org/schema/ldap" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+							http://www.springframework.org/schema/beans/spring-beans.xsd 
+							http://www.springframework.org/schema/context 
+							http://www.springframework.org/schema/context/spring-context.xsd 
+							http://www.springframework.org/schema/ldap 
+							http://www.springframework.org/schema/ldap/spring-ldap.xsd
+							http://www.springframework.org/schema/jdbc
+							http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+	<context:component-scan base-package="com.ktds.ldap" />
+	<context:property-placeholder location="classpath:/ldap.properties" system-properties-mode="OVERRIDE" />
+	<context:annotation-config />
+
+	<!-- 
+		LDAP 컨텍스트 소스 정의
+			** 중요 : ldap basedn을 정의했으므로 모든 오퍼레이션은 상대경로로 읽거나 써야 함. 
+	-->
+	<ldap:context-source id="contextSource" username="${zeiv.ldap.username}" password="${zeiv.ldap.password}" url="${zeiv.ldap.url}" base="${zeiv.ldap.base}"
+		anonymous-read-only="false" referral="ignore" />
+
+	<!-- 
+		LDAP 템플릿 정의
+			** 
+	-->
+	<ldap:ldap-template id="ldapTemplate" context-source-ref="contextSource" search-scope="SUBTREE" count-limit="0" time-limit="0"
+		ignore-name-not-found="true" ignore-partial-result="true" />
+
+	<!-- This will scan the com.ktds.ldap.domain package for interfaces extending CrudRepository (in our case, LdapRepository), automatically creating repository beans
+		based on these interfaces. -->
+	<ldap:repositories base-package="com.ktds.ldap.domain" />
+
+	<!-- This one will never be referenced directly, but the ldap:repositories tag will make sure it will be 'wired in', because the GroupRepo interface extends from
+		an interface that GroupRepoImpl implements. -->
+	<bean class="com.ktds.ldap.domain.impl.GroupRepoImpl" />
+
+	<bean class="com.ktds.ldap.domain.impl.DepartmentRepoImpl" />
+
+	<bean class="com.ktds.ldap.service.UserService">
+		<property name="directoryType" value="${zeiv.ldap.directory.type}" />
+	</bean>
+
+	<!-- Required to make sure BaseLdapName is populated in UserService -->
+	<bean class="org.springframework.ldap.core.support.BaseLdapPathBeanPostProcessor" />
+</beans>
