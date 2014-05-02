@@ -1,4 +1,4 @@
-activeProfiles=
+activeProfiles=wildfly-remote, wildfly-local
 eclipse.preferences.version=1
 resolveWorkspaceProjects=true
 version=1

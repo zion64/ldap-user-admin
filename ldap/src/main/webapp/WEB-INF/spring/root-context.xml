@@ -24,8 +24,7 @@
 							username="${sample.ldap.userDn}"
 							base="${sample.ldap.base}" />
 
-	<ldap:ldap-template id="ldapTemplate" 
-						context-source-ref="contextSource" />
+	<ldap:ldap-template id="ldapTemplate" context-source-ref="contextSource" />
 
 	<!-- 
 		This will scan the com.ktds.ldap.domain package for interfaces extending CrudRepository (in our case, LdapRepository), 

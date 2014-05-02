@@ -73,6 +73,7 @@ public class UserService implements BaseLdapNameAware {
 	}
 
 	public Iterable<User> findAll() {
+		logger.info("UserService.findAll");
 		return userRepo.findAll();
 	}
 
@@ -103,7 +104,7 @@ public class UserService implements BaseLdapNameAware {
 	 * actual users the DNs need to have the base LDAP path removed.
 	 * 
 	 * @param absoluteIds
-	 * @return
+	 * @return User set
 	 */
 	public Set<User> findAllMembers(Iterable<Name> absoluteIds) {
 		logger.info("모든 구성원을 찾으러 갑니다.");

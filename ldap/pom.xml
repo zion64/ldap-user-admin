@@ -2,25 +2,42 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>com.ktds</groupId>
 	<artifactId>ldap</artifactId>
 	<name>user-admin</name>
 	<packaging>war</packaging>
-	<version>1.0.0-BUILD-SNAPSHOT</version>
+	<version>1.0.0-RELEASE</version>
+
 	<properties>
 		<java-version>1.7</java-version>
-		<org.springframework-version>4.0.2.RELEASE</org.springframework-version>
+		<org.springframework-version>4.0.4.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.7.4</org.aspectj-version>
-		<org.slf4j-version>1.7.6</org.slf4j-version>
+		<org.slf4j-version>1.7.7</org.slf4j-version>
 		<api-version>1.0.0-M20</api-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
 	<repositories>
 		<repository>
 			<id>local-nexus</id>
-			<url>http://nexus.unionia.com:7070/nexus/content/groups/public/</url>
+			<url>http://nexus.unionia.com:8888/nexus/content/groups/public/</url>
 		</repository>
 	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>Releases</name>
+			<url>http://www.unionia.com:8888/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Snapshots</name>
+			<url>http://www.unionia.com:8888/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
@@ -179,9 +196,31 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 	</dependencies>
+
 	<build>
-		<finalName>user-admin</finalName>
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
+
+			<plugin>
+				<groupId>org.wildfly.plugins</groupId>
+				<artifactId>wildfly-maven-plugin</artifactId>
+				<version>1.0.1.Final</version>
+				<!-- <configuration> -->
+				<!-- <hostname>${wildfly-hostname}</hostname> -->
+				<!-- <port>${wildfly-port}</port> -->
+				<!-- <username>${wildfly-username}</username> -->
+				<!-- <password>${wildfly-password}</password> -->
+				<!-- </configuration> -->
+				<!-- <executions> -->
+				<!-- <execution> -->
+				<!-- <phase>package</phase> -->
+				<!-- <goals> -->
+				<!-- <goal>deploy</goal> -->
+				<!-- </goals> -->
+				<!-- </execution> -->
+				<!-- </executions> -->
+			</plugin>
+
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<version>2.9</version>
@@ -196,6 +235,7 @@
 					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -208,6 +248,7 @@
 					<showDeprecation>true</showDeprecation>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
@@ -216,25 +257,64 @@
 					<mainClass>org.test.int1.Main</mainClass>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>
+				<version>1.1</version>
 				<configuration>
-					<url>http://ldap.unionia.com:7070/manager/text</url>
-					<server>Apache_Tomcat_7.0.50</server>
-					<path>/user-admin</path>
+					<url>http://nas.zeiv.dsmynas.com:7070/manager/text</url>
+					<server>Apache_Tomcat_6.0.39</server>
+					<path>${project.artifactId}</path>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
+
 	<description>Apache Directory Server의 사용자 관리 모듈입니다.</description>
-	<url>http://ldap.unionia.com:7070/user-admin/</url>
+	<url>http://ldap1.zeiv.dsmynas.com:8080/${project.artifactId}/</url>
+
 	<organization>
 		<name>ktds</name>
-		<url>http://www.ktds.co.kr</url>
+		<url>http://www.zeiv.dsmynas.com:8080/</url>
 	</organization>
+
 	<scm>
 		<url>https://github.com/zion64/ldap-user-admin.git</url>
 		<developerConnection>안종덕</developerConnection>
 	</scm>
+
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://nas.zeiv.dsmynas.com:5050/browse/LDAPUSRADM/</url>
+	</issueManagement>
+
 </project>

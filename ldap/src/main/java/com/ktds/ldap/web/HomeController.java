@@ -4,10 +4,7 @@ package com.ktds.ldap.web;
 //import static org.springframework.web.bind.annotation.RequestMethod.GET;
 //import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -15,6 +12,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ldap.support.LdapUtils;
+import org.springframework.stereotype.Controller;
+//import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,16 +33,6 @@ import com.ktds.ldap.domain.GroupRepo;
 import com.ktds.ldap.domain.User;
 import com.ktds.ldap.service.UserService;
 
-import org.springframework.ldap.support.LdapUtils;
-import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-
 /**
  * Handles requests for the application home page.
  */
@@ -45,12 +41,16 @@ public class HomeController {
 
 	private static final Logger logger = LoggerFactory.getLogger("com.ktds.ldap");
 	private final AtomicInteger nextEmployeeNumber = new AtomicInteger(10);
+	
 	@Autowired
 	private DepartmentRepo departmentRepo;
+	
 	@Autowired
 	private GroupRepo groupRepo;
+	
 	@Autowired
 	private UserService userService;
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -72,8 +72,10 @@ public class HomeController {
 	public String index(ModelMap map, @RequestParam(required = false) String name) {
 		logger.info("사용자 목록을 얻어 옮니다.(/users)");
 		if (StringUtils.hasText(name)) {
+			logger.info("사용자 목록을 얻어 옮니다.(hasText = true)");
 			map.put("users", userService.searchByNameName(name));
 		} else {
+			logger.info("사용자 목록을 얻어 옮니다.(hasText = false)");
 			map.put("users", userService.findAll());
 		}
 		return "listUsers";

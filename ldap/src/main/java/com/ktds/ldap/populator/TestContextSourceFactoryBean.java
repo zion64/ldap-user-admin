@@ -27,11 +27,12 @@ import org.springframework.ldap.support.LdapUtils;
 /**
  * @author Mattias Hellborg Arthursson
  */
-public class TestContextSourceFactoryBean extends AbstractFactoryBean {
+public class TestContextSourceFactoryBean extends AbstractFactoryBean<Object> {
 	private int port;
 
 	private String defaultPartitionSuffix;
 
+	@SuppressWarnings("unused")
 	private String defaultPartitionName;
 
 	private String principal;
@@ -42,7 +43,7 @@ public class TestContextSourceFactoryBean extends AbstractFactoryBean {
 
 	private Resource ldifFile;
 
-	private Class dirObjectFactory = DefaultDirObjectFactory.class;
+	private Class<DefaultDirObjectFactory> dirObjectFactory = DefaultDirObjectFactory.class;
 
 	private boolean pooled = true;
 
@@ -58,7 +59,7 @@ public class TestContextSourceFactoryBean extends AbstractFactoryBean {
 		this.pooled = pooled;
 	}
 
-	public void setDirObjectFactory(Class dirObjectFactory) {
+	public void setDirObjectFactory(Class<DefaultDirObjectFactory> dirObjectFactory) {
 		this.dirObjectFactory = dirObjectFactory;
 	}
 
@@ -133,7 +134,7 @@ public class TestContextSourceFactoryBean extends AbstractFactoryBean {
 		return contextSource;
 	}
 
-	public Class getObjectType() {
+	public Class<ContextSource> getObjectType() {
 		return ContextSource.class;
 	}
 
